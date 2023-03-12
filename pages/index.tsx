@@ -12,8 +12,21 @@ const Home: NextPage = () => {
   const [headingNumber, setHeadingNumber] = useState<number>(1);
   const [headings, setHeadings] = useState<string[]>([]);
   const [chapterWordCounts, setChapterWordCounts] = useState<number[]>([]);
-  const t = useLocale().t;
+  const [gptRes, setGptRes] = useState<string>("");
+  const locale = useLocale();
+  const t = locale.t;
 
+  function submitGPT() {
+    const uri = new URL(window.location.href);
+    fetch(
+      `${uri.protocol}/api/submitGPT/?title=${title}&wordCount=${wordCount}&title=${title}`
+    ).then((data) => {
+      data.json().then((res) => {
+        console.log(res.res);
+        setGptRes(res.res.content);
+      });
+    });
+  }
   function headingTitleInput(): ReactElement {
     let list = [];
     for (let i = 0; i < headingNumber; i++) {
@@ -134,8 +147,11 @@ const Home: NextPage = () => {
             }}
           />
           {headingTitleInput()}
-          <button type="submit">{t.top.generate}</button>
+          <button type="button" onClick={submitGPT}>
+            {t.top.generate}
+          </button>
         </form>
+        <p>{gptRes}</p>
       </main>
     </div>
   );
