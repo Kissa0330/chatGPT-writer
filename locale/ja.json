@@ -1,0 +1,9 @@
+{
+  "top": {
+    "inputTitle":{
+		"title":"タイトル",
+    "heading":"見出し"
+	},
+  "generate": "生成する"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "description": "Generate blog posts using ChatGPT. You can decide the title, heading and number of headings. It helps with copy-and-paste checking and fact-checking.",
+  "top": {
+    "inputTitle": {
+      "contentsKeywords": "Contents keywords",
+      "title": "Title",
+      "heading": "Heading",
+      "headingNumber": "Number of headings",
+      "outputLanguage": "Output language",
+	  "numberOfCharacters": "Word Count",
+	  "add":"add",
+	  "delete":"delete"
+    },
+    "generate": "Generate"
+  }
+}
