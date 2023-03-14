@@ -17,6 +17,9 @@
 .form_medium input {
   margin-top: 0;
 }
+.form_medium_ele {
+  margin-top: 20px;
+}
 
 .form_bot_li {
   display: flex;
@@ -43,7 +46,6 @@
     margin-left: 20px;
   }
   .form_medium_ele {
-    margin-top: 20px;
     width: 100%;
   }
   .form_bot_li {

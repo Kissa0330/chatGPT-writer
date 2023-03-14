@@ -26,12 +26,19 @@ const Home: NextPage = () => {
         url += `${tags[i]}/`
       }
     }
+    if (headingNumber > 1) {
+      url += `&headingsInfo=`
+      for (let i = 0; i < headingNumber; i++) {
+        url += `${chapterWordCounts[i]}*${headings[i]}/`;
+      }
+    }
     setIsLoaded(true);
     setGptRes("");
     fetch(url).then((data) => {
       data.json().then((res) => {
         console.log(res.res);
         console.log(res.content);
+        console.log(res.data);
         setIsLoaded(false);
         setGptRes(res.res.content);
       });
