@@ -3,6 +3,7 @@ import { ReactElement, useState } from "react";
 import { useLocale } from "../hooks/useLocale";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
+import { GoogleAdsense } from "../components/adsense";
 
 const Home: NextPage = () => {
   const [tag, setTag] = useState<string>("");
@@ -17,28 +18,22 @@ const Home: NextPage = () => {
   const locale = useLocale();
   const t = locale.t;
 
-  function validation() :boolean
-  {
-    if (title === "")
-    {
+  function validation(): boolean {
+    if (title === "") {
       alert(t.error.titleNotExist)
       return false;
     }
-    if (isLoaded)
-    {
+    if (isLoaded) {
       alert(t.error.nowLoading)
       return false;
     }
-    for(let i in headings)
-    {
+    for (let i in headings) {
       console.log(i);
-      if (headings[i].includes("*"))
-      {
+      if (headings[i].includes("*")) {
         alert(t.error.existForbiddenChar1)
         return false;
       }
-      if (headings[i].includes("/"))
-      {
+      if (headings[i].includes("/")) {
         alert(t.error.existForbiddenChar2)
         return false;
       }
@@ -46,8 +41,7 @@ const Home: NextPage = () => {
     return true;
   }
   function submitGPT() {
-    if (!validation())
-    {
+    if (!validation()) {
       return;
     };
     const uri = new URL(window.location.href);
@@ -239,6 +233,12 @@ const Home: NextPage = () => {
         </form >
         {isLoaded && <h3>Loading...</h3>}
         {gptResponseElements()}
+        <GoogleAdsense
+          slot="8056836806"
+          style={{ display: 'block' }}
+          format="auto"
+          responsive="true"
+        />
       </main >
     </div >
   );
