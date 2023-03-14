@@ -131,7 +131,7 @@ const Home: NextPage = () => {
               onChange={(e) => {
                 setChapterWordCounts(
                   chapterWordCounts.map((count, index) =>
-                    index === i ? e.target.value : count
+                    index === i ? Number(e.target.value) : count
                   )
                 );
               }}
