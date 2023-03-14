@@ -11,21 +11,48 @@ const Home: NextPage = () => {
   const [wordCount, setWordCount] = useState<number>(1000);
   const [headingNumber, setHeadingNumber] = useState<number>(1);
   const [headings, setHeadings] = useState<string[]>([]);
-  const [chapterWordCounts, setChapterWordCounts] = useState<number[]>([]);
+  const [chapterWordCounts, setChapterWordCounts] = useState<number[]>([0]);
   const [gptRes, setGptRes] = useState<string>("");
+  const [isLoaded, setIsLoaded] = useState<bool>(false);
   const locale = useLocale();
   const t = locale.t;
 
   function submitGPT() {
     const uri = new URL(window.location.href);
-    fetch(
-      `${uri.protocol}/api/submitGPT/?title=${title}&wordCount=${wordCount}&title=${title}`
-    ).then((data) => {
+    let url = `${uri.protocol}/api/submitGPT/?locale=${locale.locale}&title=${title}&wordCount=${wordCount}&headingNumber=${headingNumber}`;
+    if (tags.length > 0) {
+      url += `&tagsNumber=${tags.length}&tags=`;
+      for (let i = 0; i < tags.length; i++) {
+        url += `${tags[i]}/`
+      }
+    }
+    setIsLoaded(true);
+    setGptRes("");
+    fetch(url).then((data) => {
       data.json().then((res) => {
         console.log(res.res);
+        console.log(res.content);
+        setIsLoaded(false);
         setGptRes(res.res.content);
       });
     });
+  }
+  function gptResponseElements() {
+    const texts = gptRes.split("\n").map((item, index) => {
+      if (item.length < 50) {
+        return (
+          <h2 key={index}>
+            {item}
+          </h2>
+        );
+      }
+      return (
+        <p key={index}>
+          {item}
+        </p>
+      );
+    });
+    return <div className={styles.gptRes}>{texts}</div>;
   }
   function headingTitleInput(): ReactElement {
     let list = [];
@@ -98,6 +125,7 @@ const Home: NextPage = () => {
       </Head>
       <main className={styles.main}>
         <h1>GPT Writer</h1>
+        <p>{t.description}</p>
         <form>
           <div>
             <label>{t.top.inputTitle.contentsKeywords}</label>
@@ -113,6 +141,7 @@ const Home: NextPage = () => {
                 if (tag === "") {
                   return;
                 }
+                setTag("");
                 setTags([...tags, tag]);
               }}
             >
@@ -151,7 +180,8 @@ const Home: NextPage = () => {
             {t.top.generate}
           </button>
         </form>
-        <p>{gptRes}</p>
+        {isLoaded && <h3>Loading...</h3>}
+        {gptResponseElements()}
       </main>
     </div>
   );

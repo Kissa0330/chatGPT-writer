@@ -1,5 +1,15 @@
 .main {
   margin: 50px;
-  text-align: center;
+  margin-left: 100px;
+  text-align: left;
+}
+
+.gptRes {
+  margin: 0 0 0 0px;
+  text-align: left;
+}
+
+.gptRes p {
+  text-align: left;
 }
 

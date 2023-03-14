@@ -1,9 +1,11 @@
 html,
 body {
+  text-align: center;
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: #2b2b2b;
 }
 
 a {
@@ -16,15 +18,23 @@ li {
 }
 
 label {
-  margin: 0 10px 0 10px;
+  margin: 0 0 0 0;
 }
 
 input {
-  margin: 20px 0 0 0;
+  margin: 20px 10px 0 10px;
 }
 
 button {
-  margin: 20px 20px 0 20px
+  cursor: pointer;
+  background-color: white;
+  border-radius: 9px;
+  border: 1.5px solid;
+  border-color: rgb(133, 133, 133);
+  color: rgb(66, 66, 66);
+  padding: 3px 15px;
+  margin-top: 20px;
+  margin-left: 10px;
 }
 
 * {

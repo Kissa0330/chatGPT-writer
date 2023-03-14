@@ -1,9 +1,16 @@
 {
+  "description": "ChatGPTを使ってブログ記事を生成します。タグ、タイトル、見出し、見出しの数を決めることができます。内容を入力してボタンを押すと記事が生成されます。",
   "top": {
-    "inputTitle":{
-		"title":"タイトル",
-    "heading":"見出し"
-	},
-  "generate": "生成する"
+    "inputTitle": {
+      "contentsKeywords": "タグ",
+      "title": "タイトル",
+      "heading": "見出し",
+      "headingNumber": "見出しの数",
+      "outputLanguage": "出力言語",
+	  "numberOfCharacters": "文字数",
+	  "add":"追加",
+	  "delete":"削除"
+    },
+    "generate": "生成"
   }
 }
