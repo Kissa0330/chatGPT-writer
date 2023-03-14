@@ -13,11 +13,43 @@ const Home: NextPage = () => {
   const [headings, setHeadings] = useState<string[]>([]);
   const [chapterWordCounts, setChapterWordCounts] = useState<number[]>([0]);
   const [gptRes, setGptRes] = useState<string>("");
-  const [isLoaded, setIsLoaded] = useState<bool>(false);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const locale = useLocale();
   const t = locale.t;
 
+  function validation() :boolean
+  {
+    if (title === "")
+    {
+      alert(t.error.titleNotExist)
+      return false;
+    }
+    if (isLoaded)
+    {
+      alert(t.error.nowLoading)
+      return false;
+    }
+    for(let i in headings)
+    {
+      console.log(i);
+      if (headings[i].includes("*"))
+      {
+        alert(t.error.existForbiddenChar1)
+        return false;
+      }
+      if (headings[i].includes("/"))
+      {
+        alert(t.error.existForbiddenChar2)
+        return false;
+      }
+    }
+    return true;
+  }
   function submitGPT() {
+    if (!validation())
+    {
+      return;
+    };
     const uri = new URL(window.location.href);
     let url = `${uri.protocol}/api/submitGPT/?locale=${locale.locale}&title=${title}&wordCount=${wordCount}&headingNumber=${headingNumber}`;
     if (tags.length > 0) {
@@ -29,7 +61,12 @@ const Home: NextPage = () => {
     if (headingNumber > 1) {
       url += `&headingsInfo=`
       for (let i = 0; i < headingNumber; i++) {
-        url += `${chapterWordCounts[i]}*${headings[i]}/`;
+        if (chapterWordCounts[i]) {
+          url += `${chapterWordCounts}`
+        }
+        if (headings[i]) {
+          url += `*${headings[i]}/`;
+        }
       }
     }
     setIsLoaded(true);

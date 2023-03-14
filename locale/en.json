@@ -12,5 +12,11 @@
 	  "delete":"delete"
     },
     "generate": "Generate"
-  }
+  },
+  "error": {
+	"titleNotExist": "Please enter a title",
+	"nowLoading": "Now loading...",
+	"existForbiddenChar1": "You cannot use '*' in a heading title.",
+	"existForbiddenChar2": "You cannot use '/' in a heading title.。"
+ }
 }

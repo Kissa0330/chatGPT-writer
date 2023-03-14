@@ -65,7 +65,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
     for (let i = 0; i < data.headings.length; i++) {
       let heading = data.headings[i].split("*");
-      if (heading[1] !== "" && heading[1] !== "undefined" && heading[1])
+      if (heading[1] !== "")
       {
         content += `${i + 1}番目の見出しのタイトルは「${heading[1]}」です。\n`
       }

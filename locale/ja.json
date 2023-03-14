@@ -12,5 +12,11 @@
 	  "delete":"削除"
     },
     "generate": "生成"
+  },
+  "error": {
+     "titleNotExist": "タイトルを入力してください",
+     "nowLoading": "ロード中です",
+     "existForbiddenChar1": "見出しのタイトルに「*」は使えません。",
+     "existForbiddenChar2": "見出しのタイトルに「/」は使えません。"
   }
 }
