@@ -58,37 +58,41 @@ const Home: NextPage = () => {
     let list = [];
     for (let i = 0; i < headingNumber; i++) {
       list.push(
-        <li key={i}>
-          <label>
-            {t.top.inputTitle.heading} {i + 1}
-          </label>
-          <input
-            id="headingNumber-input"
-            name="headings"
-            type="text"
-            value={headings[i]}
-            onChange={(e) => {
-              setHeadings(
-                headings.map((heading, index) =>
-                  index === i ? e.target.value : heading
-                )
-              );
-            }}
-          />
-          <label>{t.top.inputTitle.numberOfCharacters}</label>
-          <input
-            id="headingNumber-input"
-            name="chapterWordCounts"
-            type="number"
-            value={chapterWordCounts[i]}
-            onChange={(e) => {
-              setChapterWordCounts(
-                chapterWordCounts.map((count, index) =>
-                  index === i ? e.target.value : count
-                )
-              );
-            }}
-          />
+        <li className={styles.form_bot_li} key={i}>
+          <div className={styles.form_bot_ele}>
+            <label>
+              {t.top.inputTitle.heading} {i + 1}
+            </label>
+            <input
+              id="headingNumber-input"
+              name="headings"
+              type="text"
+              value={headings[i]}
+              onChange={(e) => {
+                setHeadings(
+                  headings.map((heading, index) =>
+                    index === i ? e.target.value : heading
+                  )
+                );
+              }}
+            />
+          </div>
+          <div className={styles.form_bot_ele}>
+            <label>{t.top.inputTitle.numberOfCharacters}</label>
+            <input
+              id="headingNumber-input"
+              name="chapterWordCounts"
+              type="number"
+              value={chapterWordCounts[i]}
+              onChange={(e) => {
+                setChapterWordCounts(
+                  chapterWordCounts.map((count, index) =>
+                    index === i ? e.target.value : count
+                  )
+                );
+              }}
+            />
+          </div>
         </li>
       );
     }
@@ -102,6 +106,7 @@ const Home: NextPage = () => {
           {tags[i]}{" "}
           <button
             type="button"
+            className={styles.delete_button}
             onClick={() => {
               setTags(tags.filter((t, index) => i !== index));
             }}
@@ -127,7 +132,7 @@ const Home: NextPage = () => {
         <h1>GPT Writer</h1>
         <p>{t.description}</p>
         <form>
-          <div>
+          <div className={styles.form_top}>
             <label>{t.top.inputTitle.contentsKeywords}</label>
             <input
               id="tag-input"
@@ -149,41 +154,49 @@ const Home: NextPage = () => {
             </button>
             {contentsKeywords()}
           </div>
-          <label>{t.top.inputTitle.title}</label>
-          <input
-            id="title-input"
-            name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <label>{t.top.inputTitle.numberOfCharacters}</label>
-          <input
-            id="wordCount-input"
-            name="wordCount"
-            value={wordCount}
-            onChange={(e) => setWordCount(Number(e.target.value))}
-          />
-          <label>{t.top.inputTitle.headingNumber}</label>
-          <input
-            id="headingNumber-input"
-            type="number"
-            name="title"
-            value={headingNumber}
-            onChange={(e) => {
-              setHeadingNumber(Number(e.target.value));
-              setHeadings([...headings, ""]);
-              setChapterWordCounts([...chapterWordCounts, 0]);
-            }}
-          />
+          <div className={styles.form_medium}>
+            <div className={styles.form_medium_ele}>
+              <label>{t.top.inputTitle.title}</label>
+              <input
+                id="title-input"
+                name="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </div>
+            <div className={styles.form_medium_ele}>
+              <label>{t.top.inputTitle.numberOfCharacters}</label>
+              <input
+                id="wordCount-input"
+                name="wordCount"
+                value={wordCount}
+                onChange={(e) => setWordCount(Number(e.target.value))}
+              />
+            </div>
+            <div className={styles.form_medium_ele}>
+              <label>{t.top.inputTitle.headingNumber}</label>
+              <input
+                id="headingNumber-input"
+                type="number"
+                name="title"
+                value={headingNumber}
+                onChange={(e) => {
+                  setHeadingNumber(Number(e.target.value));
+                  setHeadings([...headings, ""]);
+                  setChapterWordCounts([...chapterWordCounts, 0]);
+                }}
+              />
+            </div>
+          </div>
           {headingTitleInput()}
-          <button type="button" onClick={submitGPT}>
+          <button type="button" className={styles.generate_button} onClick={submitGPT}>
             {t.top.generate}
           </button>
-        </form>
+        </form >
         {isLoaded && <h3>Loading...</h3>}
         {gptResponseElements()}
-      </main>
-    </div>
+      </main >
+    </div >
   );
 };
 

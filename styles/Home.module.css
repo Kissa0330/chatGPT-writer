@@ -4,8 +4,28 @@
   text-align: left;
 }
 
+.delete_button {
+  margin-bottom: 20px;
+}
+
+.form_medium {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form_medium input {
+  margin-top: 0;
+}
+
+.form_bot_li {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
 .gptRes {
-  margin: 0 0 0 0px;
+  margin: 0 0 0 0;
   text-align: left;
 }
 
@@ -13,3 +33,23 @@
   text-align: left;
 }
 
+.generate_button {
+  margin-top: 30px;
+}
+
+@media screen and (max-width: 600px) {
+  .main {
+    margin: 20px;
+    margin-left: 20px;
+  }
+  .form_medium_ele {
+    margin-top: 20px;
+    width: 100%;
+  }
+  .form_bot_li {
+    margin-top: 20px;
+  }
+  .form_bot_ele {
+    width: 100%;
+  }
+}
