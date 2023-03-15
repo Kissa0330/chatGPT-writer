@@ -73,6 +73,9 @@ const Home: NextPage = () => {
         setIsLoaded(false);
         setGptRes(res.res.content);
       });
+    }).catch((e) => {
+      setIsLoaded(false);
+      alert(e.error.message);
     });
   }
   function gptResponseElements() {

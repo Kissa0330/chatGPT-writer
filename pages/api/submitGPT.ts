@@ -2,10 +2,6 @@ import { triggerAsyncId } from "async_hooks";
 import { NextApiRequest, NextApiResponse } from "next";
 import { gptAPI } from "../../api/gpt_API";
 
-function submitGPT(content: string): Promise<string> {
-  return gptAPI("user", content, String(process.env.OPENAIAPIKEY));
-}
-
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const data = {
     locale: req.query.locale,
@@ -14,7 +10,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     headingNumber: Number(req.query.headingNumber),
     tagsNumber: Number(req.query.tagsNumber),
     tags: String(req.query.tags).split("/"),
-    headings: String(req.query.headingsInfo).split("/")
+    headings: String(req.query.headingsInfo).split("/"),
   };
   data.headings.pop();
   let content = "";
@@ -37,13 +33,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
     for (let i = 0; i < data.headings.length; i++) {
       let heading = data.headings[i].split("*");
-      if (heading[1] !== "" && heading[1] !== "undefined" && heading[1])
-      {
-        content += `The title of ${i + 1} heading is "${heading[1]}".\n`
+      if (heading[1] !== "" && heading[1] !== "undefined" && heading[1]) {
+        content += `The title of ${i + 1} heading is "${heading[1]}".\n`;
       }
-      if (Number(heading[0]) !== 0 && heading[0])
-      {
-        content += `The number of words in the ${i + 1} heading is ${heading[0]}.\n`
+      if (Number(heading[0]) !== 0 && heading[0]) {
+        content += `The number of words in the ${i + 1} heading is ${
+          heading[0]
+        }.\n`;
       }
     }
   } else if (data.locale === "ja") {
@@ -65,17 +61,19 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
     for (let i = 0; i < data.headings.length; i++) {
       let heading = data.headings[i].split("*");
-      if (heading[1] !== "")
-      {
-        content += `${i + 1}番目の見出しのタイトルは「${heading[1]}」です。\n`
+      if (heading[1] !== "") {
+        content += `${i + 1}番目の見出しのタイトルは「${heading[1]}」です。\n`;
       }
-      if (Number(heading[0]) !== 0 && heading[0])
-      {
-        content += `${i + 1}番目の見出しの文字数は${heading[0]}です。\n`
+      if (Number(heading[0]) !== 0 && heading[0]) {
+        content += `${i + 1}番目の見出しの文字数は${heading[0]}です。\n`;
       }
     }
   }
-  submitGPT(content).then((gptRes) => {
-    res.status(200).json({ res: gptRes, content: content, data:data });
-  });
+  gptAPI("user", content, String(process.env.OPENAIAPIKEY))
+    .then((gptRes) => {
+      res.status(200).json({ res: gptRes, content: content, data: data });
+    })
+    .catch((e) => {
+      res.status(500).json({ error: e });
+    });
 }

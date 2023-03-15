@@ -9,6 +9,9 @@ async function gptAPI(role:string, content:string, API_KEY:string): Promise<stri
     model: "gpt-3.5-turbo",
     messages: [{ role: role, content: content }],
   });
+  if (completion.status !== 200) {
+    throw new Error(`Request failed with status ${completion.status}`);
+  }
   return completion.data.choices[0].message
 }
 
