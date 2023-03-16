@@ -1,5 +1,4 @@
 const { Configuration, OpenAIApi } = require("openai");
-import { dataToStream } from "../utils/toStream";
 
 export const config = {
   runtime: "edge",
