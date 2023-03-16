@@ -6,7 +6,7 @@ export const config = {
 };
 
 
-async function gptAPI(role:string, content:string, API_KEY:string): Promise<any> {
+async function gptAPI(role:string, content:string, API_KEY:string){
   const configuration = new Configuration({
     apiKey: API_KEY,
   });
