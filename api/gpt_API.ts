@@ -1,7 +1,12 @@
 const { Configuration, OpenAIApi } = require("openai");
-import { Readable } from "stream";
+import { dataToStream } from "../utils/toStream";
 
-async function gptAPI(role:string, content:string, API_KEY:string): Promise<Readable> {
+export const config = {
+  runtime: "edge",
+};
+
+
+async function gptAPI(role:string, content:string, API_KEY:string): Promise<any> {
   const configuration = new Configuration({
     apiKey: API_KEY,
   });
@@ -11,7 +16,7 @@ async function gptAPI(role:string, content:string, API_KEY:string): Promise<Read
     messages: [{ role: role, content: content }],
     stream: true,
   }, { responseType: 'stream' });
-  const stream = completion.data as any as Readable;
+  const stream = dataToStream(completion.data);
   return stream;
 }
 
