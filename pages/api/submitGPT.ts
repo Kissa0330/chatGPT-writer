@@ -1,18 +1,32 @@
 import { triggerAsyncId } from "async_hooks";
 import { NextApiRequest, NextApiResponse } from "next";
-import { gptAPI } from "../../api/gpt_API";
+import { OpenAIChatStream } from "../../utils/gpt_API";
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export const config = {
+  runtime: "edge",
+};
+
+export default async function handler(req: any) {
+  const {
+    locale: locale,
+    wordCount: wordCount,
+    title: title,
+    headingNumber: headingNumber,
+    tagsNumber: tagsNumber,
+    tags: tags,
+    headings: headingsInfo,
+    chapterWordCounts: chapterWordCounts,
+  } = await req.json();
   const data = {
-    locale: req.query.locale,
-    wordCount: req.query.wordCount,
-    title: req.query.title,
-    headingNumber: Number(req.query.headingNumber),
-    tagsNumber: Number(req.query.tagsNumber),
-    tags: String(req.query.tags).split("/"),
-    headings: String(req.query.headingsInfo).split("/"),
+    locale: locale,
+    wordCount: wordCount,
+    title: title,
+    headingNumber: headingNumber,
+    tagsNumber: tagsNumber,
+    tags: tags,
+    headings: headingsInfo,
+    chapterWordCounts: chapterWordCounts,
   };
-  data.headings.pop();
   let content = "";
   if (data.locale === "en") {
     content += `Please write a ${data.wordCount}-word blog post that meets the following criteria.\n`;
@@ -31,14 +45,13 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       }
       content += `"\n`;
     }
-    for (let i = 0; i < data.headings.length; i++) {
-      let heading = data.headings[i].split("*");
-      if (heading[1] !== "" && heading[1] !== "undefined" && heading[1]) {
-        content += `The title of ${i + 1} heading is "${heading[1]}".\n`;
+    for (let i = 0; i < data.headingNumber; i++) {
+      if (data.headings[i] !== "" && data.headings[i]) {
+        content += `The title of ${i + 1} heading is "${data.headings[i]}".\n`;
       }
-      if (Number(heading[0]) !== 0 && heading[0]) {
+      if (data.chapterWordCounts[i] !== 0) {
         content += `The number of words in the ${i + 1} heading is ${
-          heading[0]
+          data.chapterWordCounts[i]
         }.\n`;
       }
     }
@@ -59,59 +72,20 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       }
       content += `"\n`;
     }
-    for (let i = 0; i < data.headings.length; i++) {
-      let heading = data.headings[i].split("*");
-      if (heading[1] !== "") {
-        content += `${i + 1}番目の見出しのタイトルは「${heading[1]}」です。\n`;
+    for (let i = 0; i < data.headingNumber; i++) {
+      if (data.headings[i] !== "" && data.headings[i]) {
+        content += `${i + 1}番目の見出しのタイトルは「${data.headings[i]}」です。\n`;
       }
-      if (Number(heading[0]) !== 0 && heading[0]) {
-        content += `${i + 1}番目の見出しの文字数は${heading[0]}です。\n`;
+      if (data.chapterWordCounts[i] !== 0) {
+        content += `${i + 1}番目の見出しの文字数は${data.chapterWordCounts[i]}です。\n`;
       }
     }
   }
-  gptAPI("user", content, String(process.env.OPENAIAPIKEY))
-    .then((stream) => {
-      stream.on("data", (chunk) => {
-        try {
-          let str: string = chunk.toString();
-          if (str.indexOf("[DONE]") > 0) {
-            return;
-          }
-          if (str.indexOf('delta":{}') > 0) {
-            return;
-          }
-          const lines: Array<string> = str.split("\n");
-          lines.forEach((line) => {
-            if (line.startsWith("data: ")) {
-              line = line.substring("data: ".length);
-            }
-            if (line.trim() == "") {
-              return;
-            }
-            const data = JSON.parse(line);
-            if (
-              data.choices[0].delta.content === null ||
-              data.choices[0].delta.content === undefined
-            ) {
-              return;
-            }
-            res.write(JSON.stringify(data.choices[0].delta.content));
-          });
-        } catch (error) {
-          console.error(error);
-        }
-      });
-      stream.on("end", () => {
-        res.end();
-      });
-      stream.on("error", (error) => {
-        console.error(error);
-        res.end(
-          JSON.stringify({ error: true, message: "Error generating response." })
-        );
-      });
-    })
-    .catch((e) => {
-      res.status(500).json({ status: 500, error: e });
-    });
+  const payload = {
+    model: "gpt-3.5-turbo",
+    messages: [{role:"user", content:content}],
+    stream: true,
+  };
+  const stream = await OpenAIChatStream(payload);
+  return new Response(stream);
 }

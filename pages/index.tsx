@@ -11,7 +11,7 @@ const Home: NextPage = () => {
   const [title, setTitle] = useState<string>("");
   const [wordCount, setWordCount] = useState<number>(1000);
   const [headingNumber, setHeadingNumber] = useState<number>(1);
-  const [headings, setHeadings] = useState<string[]>([]);
+  const [headings, setHeadings] = useState<string[]>([""]);
   const [chapterWordCounts, setChapterWordCounts] = useState<number[]>([0]);
   const [gptRes, setGptRes] = useState<string>("");
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -27,48 +27,33 @@ const Home: NextPage = () => {
       alert(t.error.nowLoading)
       return false;
     }
-    for (let i in headings) {
-      console.log(i);
-      if (headings[i].includes("*")) {
-        alert(t.error.existForbiddenChar1)
-        return false;
-      }
-      if (headings[i].includes("/")) {
-        alert(t.error.existForbiddenChar2)
-        return false;
-      }
-    }
     return true;
   }
   async function submitGPT() {
     if (!validation()) {
       return;
     };
-    const uri = new URL(window.location.href);
-    let url = `${uri.protocol}/api/submitGPT/?locale=${locale.locale}&title=${title}&wordCount=${wordCount}&headingNumber=${headingNumber}`;
-    if (tags.length > 0) {
-      url += `&tagsNumber=${tags.length}&tags=`;
-      for (let i = 0; i < tags.length; i++) {
-        url += `${tags[i]}/`
-      }
-    }
-    else {
-      url += `&tagsNumber=${tags.length}`;
-    }
-    if (headingNumber > 1) {
-      url += `&headingsInfo=`
-      for (let i = 0; i < headingNumber; i++) {
-        if (chapterWordCounts[i]) {
-          url += `${chapterWordCounts}`
-        }
-        if (headings[i]) {
-          url += `*${headings[i]}/`;
-        }
-      }
-    }
     setGptRes("");
-    const response = await fetch(url);
+    const body = JSON.stringify({
+      locale: locale.locale,
+      wordCount: wordCount,
+      title: title,
+      headingNumber: headingNumber,
+      tagsNumber: tags.length,
+      tags: tags,
+      headings: headings,
+      chapterWordCounts: chapterWordCounts
+    });
+    const response = await fetch("/api/submitGPT", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: body,
+    });
+    setIsLoaded(true);
     const data = response.body;
+    console.log(response);
     if (!data) {
       return;
     }
@@ -79,12 +64,13 @@ const Home: NextPage = () => {
     while (!done) {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
-      const chunkValue = decoder.decode(value).replace(/"/g, '');
+      const chunkValue = decoder.decode(value);
       setGptRes((prev) => prev + chunkValue);
     }
+    setIsLoaded(false);
   }
   function gptResponseElements() {
-    const texts = gptRes.split("\\n").map((item, index) => {
+    const texts = gptRes.split("\n\n").map((item, index) => {
       return (
         <p key={index}>
           {item}
@@ -232,7 +218,6 @@ const Home: NextPage = () => {
             {t.top.generate}
           </button>
         </form >
-        {isLoaded && <h3>Loading...</h3>}
         {gptResponseElements()}
         <GoogleAdsense
           slot="8056836806"
