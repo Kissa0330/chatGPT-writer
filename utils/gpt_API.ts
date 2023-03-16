@@ -5,8 +5,9 @@ import {
   ParsedEvent,
   ReconnectInterval,
 } from "eventsource-parser";
+import { OpenAIStreamPayload, ChatResponseData } from "../types/gpt_types";
 
-export async function OpenAIChatStream(payload:any) {
+export async function OpenAIChatStream(payload: OpenAIStreamPayload) {
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
 
@@ -38,7 +39,7 @@ export async function OpenAIChatStream(payload:any) {
           }
           try {
             const json = JSON.parse(data);
-            const responseData = json;
+            const responseData = json as ChatResponseData;
             const text = responseData.choices[0].delta.content;
             if (!text || (counter < 2 && (text.match(/\n/) || []).length)) {
               // this is a prefix character (i.e., "\n\n"), do nothing

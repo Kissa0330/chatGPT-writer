@@ -1,5 +1,3 @@
-import { triggerAsyncId } from "async_hooks";
-import { NextApiRequest, NextApiResponse } from "next";
 import { OpenAIChatStream } from "../../utils/gpt_API";
 
 export const config = {
