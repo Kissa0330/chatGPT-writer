@@ -20,7 +20,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (data.headingNumber > 1) {
       content += `There are ${data.headingNumber} headings.`;
     }
-    if (data.tagsNumber !== null) {
+    if (data.tagsNumber !== 0) {
       content += `This blog post is tagged with."`;
       for (let i = 0; i < data.tagsNumber; i++) {
         if (i + 1 === data.tagsNumber) {
@@ -48,7 +48,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (data.headingNumber > 1) {
       content += `見出しが${data.headingNumber}個あります。`;
     }
-    if (data.tagsNumber !== null) {
+    if (data.tagsNumber !== 0) {
       content += `このブログ記事には次のようなタグが付きます。"`;
       for (let i = 0; i < data.tagsNumber; i++) {
         if (i + 1 === data.tagsNumber) {
@@ -70,10 +70,48 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     }
   }
   gptAPI("user", content, String(process.env.OPENAIAPIKEY))
-    .then((gptRes) => {
-      res.status(200).json({ res: gptRes, content: content, data: data });
+    .then((stream) => {
+      stream.on("data", (chunk) => {
+        try {
+          let str: string = chunk.toString();
+          if (str.indexOf("[DONE]") > 0) {
+            return;
+          }
+          if (str.indexOf('delta":{}') > 0) {
+            return;
+          }
+          const lines: Array<string> = str.split("\n");
+          lines.forEach((line) => {
+            if (line.startsWith("data: ")) {
+              line = line.substring("data: ".length);
+            }
+            if (line.trim() == "") {
+              return;
+            }
+            const data = JSON.parse(line);
+            if (
+              data.choices[0].delta.content === null ||
+              data.choices[0].delta.content === undefined
+            ) {
+              return;
+            }
+            res.write(JSON.stringify(data.choices[0].delta.content));
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      });
+      stream.on("end", () => {
+        res.end();
+      });
+      stream.on("error", (error) => {
+        console.error(error);
+        res.end(
+          JSON.stringify({ error: true, message: "Error generating response." })
+        );
+      });
     })
     .catch((e) => {
-      res.status(500).json({ error: e });
+      res.status(500).json({ status: 500, error: e });
     });
 }

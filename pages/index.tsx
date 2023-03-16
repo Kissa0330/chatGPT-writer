@@ -40,7 +40,7 @@ const Home: NextPage = () => {
     }
     return true;
   }
-  function submitGPT() {
+  async function submitGPT() {
     if (!validation()) {
       return;
     };
@@ -51,6 +51,9 @@ const Home: NextPage = () => {
       for (let i = 0; i < tags.length; i++) {
         url += `${tags[i]}/`
       }
+    }
+    else {
+      url += `&tagsNumber=${tags.length}`;
     }
     if (headingNumber > 1) {
       url += `&headingsInfo=`
@@ -63,30 +66,25 @@ const Home: NextPage = () => {
         }
       }
     }
-    setIsLoaded(true);
     setGptRes("");
-    fetch(url).then((data) => {
-      data.json().then((res) => {
-        console.log(res.res);
-        console.log(res.content);
-        console.log(res.data);
-        setIsLoaded(false);
-        setGptRes(res.res.content);
-      });
-    }).catch((e) => {
-      setIsLoaded(false);
-      alert(e.error.message);
-    });
+    const response = await fetch(url);
+    const data = response.body;
+    if (!data) {
+      return;
+    }
+    const reader = data.getReader();
+    const decoder = new TextDecoder();
+    let done = false;
+
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      const chunkValue = decoder.decode(value).replace(/"/g, '');
+      setGptRes((prev) => prev + chunkValue);
+    }
   }
   function gptResponseElements() {
-    const texts = gptRes.split("\n").map((item, index) => {
-      if (item.length < 50) {
-        return (
-          <h2 key={index}>
-            {item}
-          </h2>
-        );
-      }
+    const texts = gptRes.split("\\n").map((item, index) => {
       return (
         <p key={index}>
           {item}

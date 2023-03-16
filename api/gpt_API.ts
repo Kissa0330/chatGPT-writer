@@ -1,6 +1,12 @@
 const { Configuration, OpenAIApi } = require("openai");
+import { Readable } from "stream";
 
-async function gptAPI(role:string, content:string, API_KEY:string): Promise<string> {
+export const config = {
+  runtime: "edge",
+};
+
+
+async function gptAPI(role:string, content:string, API_KEY:string): Promise<Readable> {
   const configuration = new Configuration({
     apiKey: API_KEY,
   });
@@ -8,11 +14,10 @@ async function gptAPI(role:string, content:string, API_KEY:string): Promise<stri
   const completion = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [{ role: role, content: content }],
-  });
-  if (completion.status !== 200) {
-    throw new Error(`Request failed with status ${completion.status}`);
-  }
-  return completion.data.choices[0].message
+    stream: true,
+  }, { responseType: 'stream' });
+  const stream = completion.data as any as Readable;
+  return stream;
 }
 
 export { gptAPI }
