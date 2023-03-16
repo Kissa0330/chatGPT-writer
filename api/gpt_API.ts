@@ -1,11 +1,6 @@
 const { Configuration, OpenAIApi } = require("openai");
 import { Readable } from "stream";
 
-export const config = {
-  runtime: "edge",
-};
-
-
 async function gptAPI(role:string, content:string, API_KEY:string): Promise<Readable> {
   const configuration = new Configuration({
     apiKey: API_KEY,
