@@ -4,6 +4,7 @@ import { useLocale } from "../hooks/useLocale";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { GoogleAdsense } from "../components/adsense";
+import { text } from "stream/consumers";
 
 const Home: NextPage = () => {
   const [tag, setTag] = useState<string>("");
@@ -53,7 +54,6 @@ const Home: NextPage = () => {
     });
     setIsLoaded(true);
     const data = response.body;
-    console.log(response);
     if (!data) {
       return;
     }
@@ -70,7 +70,15 @@ const Home: NextPage = () => {
     setIsLoaded(false);
   }
   function gptResponseElements() {
-    const texts = gptRes.split("\n\n").map((item, index) => {
+    const gptResArr = gptRes.split("\n\n");
+    const texts = gptResArr.map((item, index) => {
+      if (index + 1 !== gptResArr.length && item.length < 50) {
+        return (
+          <h2 key={index}>
+            {item}
+          </h2>
+        );
+      }
       return (
         <p key={index}>
           {item}
