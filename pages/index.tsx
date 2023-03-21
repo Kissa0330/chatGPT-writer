@@ -73,13 +73,6 @@ const Home: NextPage = () => {
   function gptResponseElements() {
     const gptResArr = gptRes.split("\n\n");
     const texts = gptResArr.map((item, index) => {
-      if (index + 1 !== gptResArr.length && item.length < 50) {
-        return (
-          <Text className={styles.res_text} h2 key={index}>
-            {item}
-          </Text>
-        );
-      }
       return (
         <Text className={styles.res_text} key={index}>
           {item}
@@ -100,7 +93,7 @@ const Home: NextPage = () => {
               id="headingNumber-input"
               name="headings"
               type="text"
-              value={headings[i]}
+              // value={headings[i]}
               onChange={(e) => {
                 setHeadings(
                   headings.map((heading, index) =>
@@ -174,7 +167,7 @@ const Home: NextPage = () => {
               className={styles.top_add_input}
               id="tag-input"
               name="tag"
-              value={tag}
+              // value={tag}
               onChange={(e) => setTag(e.target.value)}
             />
             <Button type="button"
@@ -189,7 +182,7 @@ const Home: NextPage = () => {
               }}>{t.top.inputTitle.add}</Button>
             <Textarea className={styles.top_text_area} minRows={3} maxRows={3}
               width="300px"
-              value={prerequisite}
+              // value={prerequisite}
               onChange={(e) => setPrerequisite(e.target.value)}
               label={t.top.inputTitle.Prerequisite} />
           </div>
@@ -203,7 +196,7 @@ const Home: NextPage = () => {
               type="text"
               id="title-input"
               name="title"
-              value={title}
+              // value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
