@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/react": "^1.0.0-beta.12",
     "dotenv": "^16.0.3",
     "eventsource": "^2.0.2",
     "eventsource-parser": "^0.1.0",

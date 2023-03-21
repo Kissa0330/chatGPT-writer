@@ -3,8 +3,8 @@ import { ReactElement, useState } from "react";
 import { useLocale } from "../hooks/useLocale";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { GoogleAdsense } from "../components/adsense";
-import { text } from "stream/consumers";
+import { Button, Text, Input } from '@nextui-org/react';
+// import { GoogleAdsense } from "../components/adsense";
 
 const Home: NextPage = () => {
   const [tag, setTag] = useState<string>("");
@@ -74,15 +74,15 @@ const Home: NextPage = () => {
     const texts = gptResArr.map((item, index) => {
       if (index + 1 !== gptResArr.length && item.length < 50) {
         return (
-          <h2 key={index}>
+          <Text h2 key={index}>
             {item}
-          </h2>
+          </Text>
         );
       }
       return (
-        <p key={index}>
+        <Text key={index}>
           {item}
-        </p>
+        </Text>
       );
     });
     return <div className={styles.gptRes}>{texts}</div>;
@@ -93,10 +93,9 @@ const Home: NextPage = () => {
       list.push(
         <li className={styles.form_bot_li} key={i}>
           <div className={styles.form_bot_ele}>
-            <label>
-              {t.top.inputTitle.heading} {i + 1}
-            </label>
-            <input
+            <Input
+              label={`${t.top.inputTitle.heading} ${i + 1}`}
+              size="xs"
               id="headingNumber-input"
               name="headings"
               type="text"
@@ -111,8 +110,9 @@ const Home: NextPage = () => {
             />
           </div>
           <div className={styles.form_bot_ele}>
-            <label>{t.top.inputTitle.numberOfCharacters}</label>
-            <input
+            <Input
+              size="xs"
+              label={t.top.inputTitle.numberOfCharacters}
               id="headingNumber-input"
               name="chapterWordCounts"
               type="number"
@@ -135,21 +135,21 @@ const Home: NextPage = () => {
     let list = [];
     for (let i = 0; i < tags.length; i++) {
       list.push(
-        <li key={i}>
-          {tags[i]}{" "}
-          <button
+        <li className={styles.delete_li} key={i}>
+          <Text>{tags[i]}</Text>
+          <Button
+            size="xs"
             type="button"
             className={styles.delete_button}
             onClick={() => {
               setTags(tags.filter((t, index) => i !== index));
-            }}
-          >
+            }}>
             {t.top.inputTitle.delete}
-          </button>
+          </Button>
         </li>
       );
     }
-    return <ul>{list}</ul>;
+    return <ul className={styles.delete_ul}>{list}</ul>;
   }
   return (
     <div className={styles.container}>
@@ -162,35 +162,38 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <h1>GPT Writer</h1>
-        <p>{t.description}</p>
+        <Text h1>GPT Writer</Text>
+        <Text>{t.description}</Text>
         <form>
           <div className={styles.form_top}>
-            <label>{t.top.inputTitle.contentsKeywords}</label>
-            <input
+          <div className={styles.tag_add_form}>
+            <Input
+              type="text" 
+              size="sm"
+              label={t.top.inputTitle.contentsKeywords}
               id="tag-input"
               name="tag"
               value={tag}
               onChange={(e) => setTag(e.target.value)}
             />
-            <button
-              type="button"
+            <Button type="button"
+            size="xs"
               onClick={() => {
                 if (tag === "") {
                   return;
                 }
                 setTag("");
                 setTags([...tags, tag]);
-              }}
-            >
-              {t.top.inputTitle.add}
-            </button>
+              }}>{t.top.inputTitle.add}</Button>
+              </div>
             {contentsKeywords()}
           </div>
           <div className={styles.form_medium}>
             <div className={styles.form_medium_ele}>
-              <label>{t.top.inputTitle.title}</label>
-              <input
+              <Input
+                label={t.top.inputTitle.title}
+                size="sm"
+                type="text"
                 id="title-input"
                 name="title"
                 value={title}
@@ -198,8 +201,10 @@ const Home: NextPage = () => {
               />
             </div>
             <div className={styles.form_medium_ele}>
-              <label>{t.top.inputTitle.numberOfCharacters}</label>
-              <input
+              <Input
+                size="sm"
+                type="number"
+                label={t.top.inputTitle.numberOfCharacters}
                 id="wordCount-input"
                 name="wordCount"
                 value={wordCount}
@@ -207,8 +212,9 @@ const Home: NextPage = () => {
               />
             </div>
             <div className={styles.form_medium_ele}>
-              <label>{t.top.inputTitle.headingNumber}</label>
-              <input
+              <Input
+                size="sm"
+                label={t.top.inputTitle.headingNumber}
                 id="headingNumber-input"
                 type="number"
                 name="title"
@@ -222,17 +228,15 @@ const Home: NextPage = () => {
             </div>
           </div>
           {headingTitleInput()}
-          <button type="button" className={styles.generate_button} onClick={submitGPT}>
-            {t.top.generate}
-          </button>
+          <Button type="button" className={styles.generate_button} onClick={submitGPT}>{t.top.generate}</Button>
         </form >
         {gptResponseElements()}
-        <GoogleAdsense
+        {/* <GoogleAdsense
           slot="8056836806"
           style={{ display: 'block' }}
           format="auto"
           responsive="true"
-        />
+        /> */}
       </main >
     </div >
   );
