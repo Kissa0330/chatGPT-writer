@@ -15,7 +15,8 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="ja">
-        <Head>{CssBaseline.flush()}
+        <Head>
+          {CssBaseline.flush()}
           {process.env.NODE_ENV === 'production' && (
             <Script
               async

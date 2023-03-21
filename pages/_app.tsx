@@ -3,14 +3,21 @@ import '../styles/globals.css'
 import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app'
 import { NextUIProvider } from '@nextui-org/react';
+import { useSSR } from '@nextui-org/react'
+
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const { isBrowser } = useSSR()
   return (
     <>
-      <GoogleAnalytics />
-      <NextUIProvider>
-        <Component {...pageProps} />
-      </NextUIProvider>
+      {isBrowser && (
+
+        <NextUIProvider>
+          <GoogleAnalytics />
+          <Component {...pageProps} />
+        </NextUIProvider>
+      )
+      }
     </>
   )
 }

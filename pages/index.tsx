@@ -3,7 +3,7 @@ import { ReactElement, useState } from "react";
 import { useLocale } from "../hooks/useLocale";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import { Button, Text, Input } from '@nextui-org/react';
+import { Button, Text, Input, Textarea } from '@nextui-org/react';
 // import { GoogleAdsense } from "../components/adsense";
 
 const Home: NextPage = () => {
@@ -16,6 +16,7 @@ const Home: NextPage = () => {
   const [chapterWordCounts, setChapterWordCounts] = useState<number[]>([0]);
   const [gptRes, setGptRes] = useState<string>("");
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [prerequisite, setPrerequisite] = useState<string>("");
   const locale = useLocale();
   const t = locale.t;
 
@@ -74,13 +75,13 @@ const Home: NextPage = () => {
     const texts = gptResArr.map((item, index) => {
       if (index + 1 !== gptResArr.length && item.length < 50) {
         return (
-          <Text h2 key={index}>
+          <Text className={styles.res_text} h2 key={index}>
             {item}
           </Text>
         );
       }
       return (
-        <Text key={index}>
+        <Text className={styles.res_text} key={index}>
           {item}
         </Text>
       );
@@ -164,20 +165,21 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <Text h1>GPT Writer</Text>
         <Text>{t.description}</Text>
-        <form>
-          <div className={styles.form_top}>
-          <div className={styles.tag_add_form}>
+        <div className={styles.form_top}>
+          <div className={styles.form_top_header}>
             <Input
-              type="text" 
+              type="text"
               size="sm"
               label={t.top.inputTitle.contentsKeywords}
+              className={styles.top_add_input}
               id="tag-input"
               name="tag"
               value={tag}
               onChange={(e) => setTag(e.target.value)}
             />
             <Button type="button"
-            size="xs"
+              size="xs"
+              className={styles.top_add_button}
               onClick={() => {
                 if (tag === "") {
                   return;
@@ -185,51 +187,55 @@ const Home: NextPage = () => {
                 setTag("");
                 setTags([...tags, tag]);
               }}>{t.top.inputTitle.add}</Button>
-              </div>
-            {contentsKeywords()}
+            <Textarea className={styles.top_text_area} minRows={3} maxRows={3}
+              width="300px"
+              value={prerequisite}
+              onChange={(e) => setPrerequisite(e.target.value)}
+              label={t.top.inputTitle.Prerequisite} />
           </div>
-          <div className={styles.form_medium}>
-            <div className={styles.form_medium_ele}>
-              <Input
-                label={t.top.inputTitle.title}
-                size="sm"
-                type="text"
-                id="title-input"
-                name="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </div>
-            <div className={styles.form_medium_ele}>
-              <Input
-                size="sm"
-                type="number"
-                label={t.top.inputTitle.numberOfCharacters}
-                id="wordCount-input"
-                name="wordCount"
-                value={wordCount}
-                onChange={(e) => setWordCount(Number(e.target.value))}
-              />
-            </div>
-            <div className={styles.form_medium_ele}>
-              <Input
-                size="sm"
-                label={t.top.inputTitle.headingNumber}
-                id="headingNumber-input"
-                type="number"
-                name="title"
-                value={headingNumber}
-                onChange={(e) => {
-                  setHeadingNumber(Number(e.target.value));
-                  setHeadings([...headings, ""]);
-                  setChapterWordCounts([...chapterWordCounts, 0]);
-                }}
-              />
-            </div>
+          {contentsKeywords()}
+        </div>
+        <div className={styles.form_medium}>
+          <div className={styles.form_medium_ele}>
+            <Input
+              label={t.top.inputTitle.title}
+              size="sm"
+              type="text"
+              id="title-input"
+              name="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </div>
-          {headingTitleInput()}
-          <Button type="button" className={styles.generate_button} onClick={submitGPT}>{t.top.generate}</Button>
-        </form >
+          <div className={styles.form_medium_ele}>
+            <Input
+              size="sm"
+              type="number"
+              label={t.top.inputTitle.numberOfCharacters}
+              id="wordCount-input"
+              name="wordCount"
+              value={wordCount}
+              onChange={(e) => setWordCount(Number(e.target.value))}
+            />
+          </div>
+          <div className={styles.form_medium_ele}>
+            <Input
+              size="sm"
+              label={t.top.inputTitle.headingNumber}
+              id="headingNumber-input"
+              type="number"
+              name="title"
+              value={headingNumber}
+              onChange={(e) => {
+                setHeadingNumber(Number(e.target.value));
+                setHeadings([...headings, ""]);
+                setChapterWordCounts([...chapterWordCounts, 0]);
+              }}
+            />
+          </div>
+        </div>
+        {headingTitleInput()}
+        <Button type="button" className={styles.generate_button} onClick={submitGPT}>{t.top.generate}</Button>
         {gptResponseElements()}
         {/* <GoogleAdsense
           slot="8056836806"

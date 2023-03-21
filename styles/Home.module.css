@@ -16,10 +16,20 @@
   margin-bottom: 20px;
 }
 
-.tag_add_form {
+.form_top_header {
   margin-top: 20px;
   display: flex;
   align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.top_add_input {
+  margin-bottom: 20px;
+}
+
+.top_add_button {
+  margin-right: 30px;
+  margin-bottom: 20px
 }
 
 .form_medium {
@@ -42,6 +52,10 @@
 
 .form_bot_ele {
   margin-right: 20px;
+}
+
+.res_text {
+  margin-top: 20px;
 }
 
 .gptRes {

@@ -2,6 +2,7 @@
   "description": "Generate blog posts using ChatGPT. You can decide the title, heading, number of headings and heading word count . Enter the content and press the button to generate the article.",
   "top": {
     "inputTitle": {
+      "Prerequisite":"Prerequisite",
       "contentsKeywords": "Contents keywords",
       "title": "Title",
       "heading": "Heading",
