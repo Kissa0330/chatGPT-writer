@@ -38,6 +38,7 @@ const Home: NextPage = () => {
     setGptRes("");
     const body = JSON.stringify({
       locale: locale.locale,
+      prerequisite: prerequisite,
       wordCount: wordCount,
       title: title,
       headingNumber: headingNumber,
