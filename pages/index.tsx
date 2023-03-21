@@ -136,7 +136,7 @@ const Home: NextPage = () => {
             size="xs"
             type="button"
             className={styles.delete_button}
-            onClick={() => {
+            onPress={() => {
               setTags(tags.filter((t, index) => i !== index));
             }}>
             {t.top.inputTitle.delete}
@@ -174,12 +174,14 @@ const Home: NextPage = () => {
             <Button type="button"
               size="xs"
               className={styles.top_add_button}
-              onClick={() => {
+              onPress={() => {
                 if (tag === "") {
                   return;
                 }
-                setTag("");
                 setTags([...tags, tag]);
+                setTag("");
+                const input = document.getElementById("tag-input") as HTMLInputElement;
+                input.value= "";
               }}>{t.top.inputTitle.add}</Button>
             <Textarea className={styles.top_text_area} minRows={3} maxRows={3}
               width="300px"
@@ -229,7 +231,7 @@ const Home: NextPage = () => {
           </div>
         </div>
         {headingTitleInput()}
-        <Button type="button" className={styles.generate_button} onClick={submitGPT}>{t.top.generate}</Button>
+        <Button type="button" className={styles.generate_button} onPress={submitGPT}>{t.top.generate}</Button>
         {gptResponseElements()}
         {/* <GoogleAdsense
           slot="8056836806"
