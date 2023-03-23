@@ -147,6 +147,17 @@ const Home: NextPage = () => {
     }
     return <ul className={styles.delete_ul}>{list}</ul>;
   }
+  function countWords() {
+    const spaces = gptRes.match(/\S+/g);
+    let words;
+    if (spaces) {
+      words = spaces.length;
+    } else {
+      words = 0;
+    }
+    return words;
+  }
+  console.log(gptRes.split(/(,|.)/));
   return (
     <div className={styles.container}>
       <Head>
@@ -234,7 +245,7 @@ const Home: NextPage = () => {
         {headingTitleInput()}
         <Button type="button" className={styles.generate_button} onPress={submitGPT}>{t.top.generate}</Button>
         {gptResponseElements()}
-        {gptRes && <Text className={styles.numberOfCharacters}>{t.top.inputTitle.numberOfCharacters}: {locale.locale === "en" ? gptRes.split(" ").length : gptRes.length}</Text>}
+        {gptRes && <Text className={styles.numberOfCharacters}>{t.top.inputTitle.numberOfCharacters}: {locale.locale === "en" ? countWords() : gptRes.length}</Text>}
         {/* <GoogleAdsense
           slot="8056836806"
           style={{ display: 'block' }}
