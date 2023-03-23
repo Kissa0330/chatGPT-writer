@@ -17,6 +17,9 @@
   "evaluation": {
     "title": "consistency"
   },
+  "factcheck": {
+    "title": "Fact check suggestion"
+  },
   "error": {
     "titleNotExist": "Please enter a title",
     "nowLoading": "Now loading...",

@@ -17,6 +17,9 @@
   "evaluation": {
     "title": "評価"
   },
+  "factcheck": {
+    "title": "ファクトチェックの提案"
+  },
   "error": {
     "titleNotExist": "タイトルを入力してください",
     "nowLoading": "ロード中です",

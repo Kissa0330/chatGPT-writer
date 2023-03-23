@@ -77,7 +77,10 @@
 
 .analyze {
   margin-top: 20px;
-  display: flex;
+}
+
+.factcheck {
+  margin-top: 20px;
 }
 
 @media screen and (max-width: 600px) {

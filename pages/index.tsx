@@ -5,6 +5,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { Button, Text, Input, Textarea } from '@nextui-org/react';
 import Evaluation from "../components/evaluation"
+import FactCheck from "../components/factcheck"
 // import { GoogleAdsense } from "../components/adsense";
 
 const Home: NextPage = () => {
@@ -247,7 +248,12 @@ const Home: NextPage = () => {
         {gptRes && !isLoaded && <Text className={styles.numberOfCharacters}>{t.top.inputTitle.numberOfCharacters}: {locale.locale === "en" ? countWords() : gptRes.length}</Text>}
         {gptRes && !isLoaded &&
           <div className={styles.analyze}>
-            <Evaluation text={gptRes} />
+            <div className={styles.evaluation}>
+              <Evaluation text={gptRes} />
+            </div>
+            <div className={styles.factcheck}>
+              <FactCheck text={gptRes}></FactCheck>
+            </div>
           </div>}
         {/* <GoogleAdsense
           slot="8056836806"
