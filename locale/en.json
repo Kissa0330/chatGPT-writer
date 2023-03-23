@@ -2,22 +2,25 @@
   "description": "Generate blog posts using ChatGPT. You can decide the title, heading, number of headings and heading word count . Enter the content and press the button to generate the article. If it does not work properly, please reload.",
   "top": {
     "inputTitle": {
-      "Prerequisite":"Prerequisite",
+      "Prerequisite": "Prerequisite",
       "contentsKeywords": "Contents keywords",
       "title": "Title",
       "heading": "Heading",
       "headingNumber": "Number of headings",
       "outputLanguage": "Output language",
-	  "numberOfCharacters": "Word Count",
-	  "add":"add",
-	  "delete":"delete"
+      "numberOfCharacters": "Word Count",
+      "add": "add",
+      "delete": "delete"
     },
     "generate": "Generate"
   },
+  "evaluation": {
+    "title": "consistency"
+  },
   "error": {
-	"titleNotExist": "Please enter a title",
-	"nowLoading": "Now loading...",
-	"existForbiddenChar1": "You cannot use '*' in a heading title.",
-	"existForbiddenChar2": "You cannot use '/' in a heading title.。"
- }
+    "titleNotExist": "Please enter a title",
+    "nowLoading": "Now loading...",
+    "existForbiddenChar1": "You cannot use '*' in a heading title.",
+    "existForbiddenChar2": "You cannot use '/' in a heading title.。"
+  }
 }

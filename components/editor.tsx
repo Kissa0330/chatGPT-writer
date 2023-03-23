@@ -1,6 +1,4 @@
-import { NextComponentType } from 'next'
-import { type } from 'os'
-import React, { ReactPropTypes, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { createEditor, Transforms, Editor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
 

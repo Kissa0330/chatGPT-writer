@@ -1,5 +1,3 @@
-//src/utils/OpenAIStream.ts
-
 import {
   createParser,
   ParsedEvent,

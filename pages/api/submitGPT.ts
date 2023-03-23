@@ -1,4 +1,4 @@
-import { OpenAIChatStream } from "../../utils/gpt_API";
+import { OpenAIChatStream } from "../../utils/GPTStream";
 
 export const config = {
   runtime: "edge",

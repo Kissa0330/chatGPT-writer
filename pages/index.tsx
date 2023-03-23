@@ -4,6 +4,7 @@ import { useLocale } from "../hooks/useLocale";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import { Button, Text, Input, Textarea } from '@nextui-org/react';
+import Evaluation from "../components/evaluation"
 // import { GoogleAdsense } from "../components/adsense";
 
 const Home: NextPage = () => {
@@ -67,7 +68,6 @@ const Home: NextPage = () => {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
       const chunkValue = decoder.decode(value);
-      const tmp = gptRes + chunkValue;
       setGptRes((prev) => prev + chunkValue);
     }
     setIsLoaded(false);
@@ -157,7 +157,6 @@ const Home: NextPage = () => {
     }
     return words;
   }
-  console.log(gptRes.split(/(,|.)/));
   return (
     <div className={styles.container}>
       <Head>
@@ -245,7 +244,11 @@ const Home: NextPage = () => {
         {headingTitleInput()}
         <Button type="button" className={styles.generate_button} onPress={submitGPT}>{t.top.generate}</Button>
         {gptResponseElements()}
-        {gptRes && <Text className={styles.numberOfCharacters}>{t.top.inputTitle.numberOfCharacters}: {locale.locale === "en" ? countWords() : gptRes.length}</Text>}
+        {gptRes && !isLoaded && <Text className={styles.numberOfCharacters}>{t.top.inputTitle.numberOfCharacters}: {locale.locale === "en" ? countWords() : gptRes.length}</Text>}
+        {gptRes && !isLoaded &&
+          <div className={styles.analyze}>
+            <Evaluation text={gptRes} />
+          </div>}
         {/* <GoogleAdsense
           slot="8056836806"
           style={{ display: 'block' }}
