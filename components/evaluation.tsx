@@ -53,11 +53,13 @@ const App = (props: Prop) => {
 		setIsLoaded(false);
 	}
 	function gptResponseElements() {
+		console.log(gptRes);
 		const gptResArr = gptRes.split("\n\n");
 		const texts = gptResArr.map((item, index) => {
 			return (
 				<Text className={styles.res_text} key={index}>
 					{item}
+					<br/>
 				</Text>
 			);
 		});
