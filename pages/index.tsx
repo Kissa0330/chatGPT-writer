@@ -67,6 +67,7 @@ const Home: NextPage = () => {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
       const chunkValue = decoder.decode(value);
+      const tmp = gptRes + chunkValue;
       setGptRes((prev) => prev + chunkValue);
     }
     setIsLoaded(false);
