@@ -182,7 +182,7 @@ const Home: NextPage = () => {
                 setTags([...tags, tag]);
                 setTag("");
                 const input = document.getElementById("tag-input") as HTMLInputElement;
-                input.value= "";
+                input.value = "";
               }}>{t.top.inputTitle.add}</Button>
             <Textarea className={styles.top_text_area} minRows={3} maxRows={3}
               width="300px"
@@ -234,6 +234,7 @@ const Home: NextPage = () => {
         {headingTitleInput()}
         <Button type="button" className={styles.generate_button} onPress={submitGPT}>{t.top.generate}</Button>
         {gptResponseElements()}
+        {gptRes && <Text className={styles.numberOfCharacters}>{t.top.inputTitle.numberOfCharacters}: {locale.locale === "en" ? gptRes.split(" ").length : gptRes.length}</Text>}
         {/* <GoogleAdsense
           slot="8056836806"
           style={{ display: 'block' }}

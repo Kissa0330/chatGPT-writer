@@ -71,6 +71,10 @@
   margin-top: 30px;
 }
 
+.numberOfCharacters {
+  margin-top: 20px;
+}
+
 @media screen and (max-width: 600px) {
   .main {
     margin: 20px;
