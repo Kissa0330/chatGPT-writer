@@ -256,7 +256,7 @@ const Home: NextPage = () => {
               <FactCheck text={gptRes}></FactCheck>
             </div>
           </div>}
-        {gptRes && !isLoaded && <Link href="/editor"><Button className={styles.edit_button}>{t.top.edit}</Button></Link>}
+        {gptRes && !isLoaded && <Link href={`/editor?text=${gptRes}`}><Button className={styles.edit_button}>{t.top.edit}</Button></Link>}
         {/* <GoogleAdsense
           slot="8056836806"
           style={{ display: 'block' }}
