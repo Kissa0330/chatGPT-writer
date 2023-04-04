@@ -66,7 +66,7 @@ const App = (props: Prop) => {
 	}
 	useEffect(() => {
 		submitGPT();
-	},[]);
+	},[props.text]);
 	return (
 		<div>
 			<Text h3>
