@@ -1,27 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { createEditor, Transforms, Editor } from 'slate'
 import { Slate, Editable, withReact } from 'slate-react'
-
-type Prop = {
-	text: string
-}
-
+import styles from "../styles/Editor.module.css";
 type initialValue = [{
 	type: string,
 	children: [{ text: string }]
 }]
 
-const App = (props: Prop) => {
-	const [initialValue, setInitialValue] = useState<initialValue>();
+const App = () => {
+	const [initialValue, setInitialValue] = useState<initialValue>([{ type: "paragrah", children: [{ text: "test" }] }]);
 	const [editor] = useState(() => withReact(createEditor()))
-	useEffect(() => {
-		setInitialValue([{ type: "paragrah", children: [{ text: props.text }] }])
-	}, [props.text])
 	return (
 		<>
-			{initialValue && <Slate editor={editor} value={initialValue}>
+			<Slate editor={editor} value={initialValue}>
 				<Editable />
-			</Slate>}
+			</Slate>
 		</>
 	)
 }

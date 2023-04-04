@@ -53,7 +53,7 @@ const App = (props: Prop) => {
 		setIsLoaded(false);
 	}
 	function gptResponseElements() {
-		const gptResArr = gptRes.split("\n\n");
+		const gptResArr = gptRes.split("\n");
 		const texts = gptResArr.map((item, index) => {
 			return (
 				<Text className={styles.res_text} key={index}>

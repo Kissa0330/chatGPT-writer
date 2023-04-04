@@ -12,7 +12,8 @@
       "add": "追加",
       "delete": "削除"
     },
-    "generate": "生成"
+    "generate": "生成",
+    "edit": "編集"
   },
   "evaluation": {
     "title": "評価"

@@ -12,7 +12,8 @@
       "add": "add",
       "delete": "delete"
     },
-    "generate": "Generate"
+    "generate": "Generate",
+    "edit": "edit"
   },
   "evaluation": {
     "title": "consistency"
