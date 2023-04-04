@@ -1,18 +1,33 @@
-.title {
-	margin-top: 10px;
-	letter-spacing: 0.05em;
-	text-align: center;
+.flex_wrapper {
+	display: flex;
 }
-.editor_wrapper {
-	margin-top: 10px;
-	margin-bottom: 50px;
-	padding: 30px;
+
+.flex_left {
+	width: 30vw;
+	min-height: 100vh;
+	height: 100%;
+	background-color: rgb(229, 229, 229);
+}
+
+.flex_left_wrapper {
+	margin-top: 50px;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.flex_left_button {
+	margin-top: 20px;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.editor_wrapper {
+	margin-top: 30px;
+	margin-bottom: 50px;
+	margin-left: 50px;
+	margin-right: 50px;
 	width: 80vw;
 	min-height: 80vh;
 	height: 100%;
-	border: solid 1px #2b2b2b;
-	border-radius: 10px;
 	text-align: left;
 }
