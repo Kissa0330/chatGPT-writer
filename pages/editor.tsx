@@ -26,7 +26,7 @@ const App = () => {
 	const { text } = query;
 	let textList = [];
 	if (typeof text === "string") {
-		for (const i of text.split("_")) {
+		for (const i of text.split("\\n")) {
 			textList.push({
 				type: "paragrah",
 				children: [{ text: i }]
