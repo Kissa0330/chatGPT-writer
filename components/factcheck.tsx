@@ -53,7 +53,6 @@ const App = (props: Prop) => {
 		setIsLoaded(false);
 	}
 	function gptResponseElements() {
-		console.log(gptRes);
 		const gptResArr = gptRes.split("\n");
 		const texts = gptResArr.map((item, index) => {
 			return (
@@ -67,7 +66,7 @@ const App = (props: Prop) => {
 	}
 	useEffect(() => {
 		submitGPT();
-	},[]);
+	},[props.text]);
 	return (
 		<div>
 			<Text h3>

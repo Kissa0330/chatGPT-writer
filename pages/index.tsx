@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import { ReactElement, useState } from "react";
 import { useLocale } from "../hooks/useLocale";
 import Head from "next/head";
+import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import { Button, Text, Input, Textarea } from '@nextui-org/react';
 import Evaluation from "../components/evaluation"
@@ -161,7 +162,7 @@ const Home: NextPage = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>GPT Writer</title>
+        <title>GPT Writer - write blog post in a minute</title>
         <meta
           name="description"
           content="Generate blog posts using ChatGPT. You can decide the title, heading and number of headings. It helps with copy-and-paste checking and fact-checking."
@@ -255,6 +256,7 @@ const Home: NextPage = () => {
               <FactCheck text={gptRes}></FactCheck>
             </div>
           </div>}
+        {gptRes && !isLoaded && <Link href={`/editor?text=${gptRes.replace(/\n/g, "\\n")}`}><Button className={styles.edit_button}>{t.top.edit}</Button></Link>}
         {/* <GoogleAdsense
           slot="8056836806"
           style={{ display: 'block' }}
