@@ -70,7 +70,8 @@ const App = () => {
 						if (isAstChange) {
 							editorText.current = "";
 							for (let i of value) {
-								for (let j of i.children) {
+								const cast_i = i as any;
+								for (let j of cast_i.children) {
 									editorText.current += j.text;
 								}
 							}
