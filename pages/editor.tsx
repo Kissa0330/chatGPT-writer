@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { useLocale } from "../hooks/useLocale";
-import { Button } from '@nextui-org/react';
+import { Button, Text } from '@nextui-org/react';
 import { createEditor } from 'slate'
 import Head from "next/head";
 import { useRouter } from 'next/router';
@@ -34,6 +34,16 @@ const App = () => {
 			editorText.current += i;
 		}
 	}
+	function countWords() {
+		const spaces = editorText.current.match(/\S+/g);
+		let words;
+		if (spaces) {
+			words = spaces.length;
+		} else {
+			words = 0;
+		}
+		return words;
+	}
 	const initialValue = textList
 	return (
 		<>
@@ -64,15 +74,16 @@ const App = () => {
 					}}>
 						<Editable />
 					</Slate>
+					<Text className={styles.numberOfCharacters}>{t.top.inputTitle.numberOfCharacters}: {locale.locale === "en" ? countWords() : editorText.current.length}</Text>
 				</div>
 				<div className={styles.flex_left}>
 					<div className={styles.flex_left_wrapper}>
 						{isEvaluation && <Evaluation text={evaluationText} />}
 						<Button className={styles.flex_left_button}
 							onClick={() => {
-							setIsEvaluation(true);
-							setEvaluationText(editorText.current)
-						}}>{t.evaluation.title}</Button>
+								setIsEvaluation(true);
+								setEvaluationText(editorText.current)
+							}}>{t.evaluation.title}</Button>
 					</div>
 					<div className={styles.flex_left_wrapper}>
 						{isFactCheck && <FactCheck text={factCheckText} />}
