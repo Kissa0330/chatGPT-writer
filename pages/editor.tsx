@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useLocale } from "../hooks/useLocale";
 import { Button, Text } from '@nextui-org/react';
 import { createEditor } from 'slate'
@@ -16,23 +16,28 @@ const App = () => {
 	const [isEvaluation, setIsEvaluation] = useState(false);
 	const [factCheckText, setFactCheckText] = useState("");
 	const [isFactCheck, setIsFactCheck] = useState(false);
+	const [charCount, setCharCount] = useState(0);
 	const editorText = useRef("");
 	const locale = useLocale();
 	const t = locale.t;
-
+	let textList: any = [];
+	useEffect(() => {
+		if (isReady) {
+			const { text } = query;
+			if (typeof text === "string") {
+				for (const i of text.split("\\n")) {
+					textList.push({
+						type: "paragrah",
+						children: [{ text: i }]
+					});
+					editorText.current += i;
+				}
+			}
+			locale.locale === "en" ? setCharCount(countWords()) : setCharCount(editorText.current.length)
+		}
+	}, [isReady, query])
 	if (!isReady) {
 		return;
-	}
-	const { text } = query;
-	let textList = [];
-	if (typeof text === "string") {
-		for (const i of text.split("\\n")) {
-			textList.push({
-				type: "paragrah",
-				children: [{ text: i }]
-			});
-			editorText.current += i;
-		}
 	}
 	function countWords() {
 		const spaces = editorText.current.match(/\S+/g);
@@ -44,7 +49,6 @@ const App = () => {
 		}
 		return words;
 	}
-	const initialValue = textList
 	return (
 		<>
 			<Head>
@@ -59,7 +63,7 @@ const App = () => {
 			</Head>
 			<div className={styles.flex_wrapper}>
 				<div className={styles.editor_wrapper}>
-					<Slate editor={editor} value={initialValue} onChange={value => {
+					<Slate editor={editor} value={textList} onChange={value => {
 						const isAstChange = editor.operations.some(
 							op => 'set_selection' !== op.type
 						)
@@ -70,11 +74,12 @@ const App = () => {
 									editorText.current += j.text;
 								}
 							}
+							locale.locale === "en" ? setCharCount(countWords()) : setCharCount(editorText.current.length)
 						}
 					}}>
 						<Editable />
 					</Slate>
-					<Text className={styles.numberOfCharacters}>{t.top.inputTitle.numberOfCharacters}: {locale.locale === "en" ? countWords() : editorText.current.length}</Text>
+					<Text className={styles.numberOfCharacters}>{t.top.inputTitle.numberOfCharacters}: {charCount}</Text>
 				</div>
 				<div className={styles.flex_left}>
 					<div className={styles.flex_left_wrapper}>

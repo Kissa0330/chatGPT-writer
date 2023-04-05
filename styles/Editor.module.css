@@ -6,6 +6,7 @@
 .flex_left {
 	width: 30vw;
 	background-color: rgb(229, 229, 229);
+	min-height: 100vh;
 }
 
 .flex_left_wrapper {
